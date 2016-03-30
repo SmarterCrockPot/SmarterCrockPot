@@ -1,0 +1,43 @@
+--
+-- In order to make your custom crock pot smarter, see what I did with the cookpot in the modmain.lua file.
+-- Thats all there is to do!
+-- you of course, will also have to check that SmarterCrockPot is also loaded already.
+--
+
+-- Function to run when the predict button is pressed.
+local function button2click(inst)
+    action = GLOBAL.ACTIONS.PREDICT
+    if inst.components.container ~= nil then
+        GLOBAL.BufferedAction(inst.components.container.opener, inst, action):Do()
+    end
+end
+
+
+local function MyCustomCookPotInit(prefab)
+	
+    
+    if GLOBAL.ACTIONS.PREDICT and GLOBAL.SmarterCrockPotLoaded then
+        local widgetbuttoninfo2 = {
+        text = "Predict!",
+        -- Choose wisely!
+        position = GLOBAL.Vector3(0, -185, 0),
+        fn = function(prefab)
+            button2click(prefab)
+        end,
+        
+        validfn = function(prefab)
+            return prefab.components.stewer:CanCook()
+        end,
+    } 
+        prefab.components.container.widgetbuttoninfo2 = widgetbuttoninfo2
+        
+        if not prefab.components.predicter then
+            -- This component does all the magic
+            prefab:AddComponent("predicter")
+        end
+    end 
+end
+
+
+
+AddPrefabPostInit("mycustomcookpot", SmarterCookpotInit)
