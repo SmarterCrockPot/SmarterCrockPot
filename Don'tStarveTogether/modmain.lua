@@ -27,3 +27,25 @@ end
 
 
 AddPrefabPostInit("cookpot", SmarterCookpotInit)
+
+AddSimPostInit(function()
+    -- Smarter Crock Pot & Advanced Tooltips mods compatibility hack
+    -- net_vars for mod component actions are not created when they spawn an item with TheWorld.mastersim forced to true - ModManager reads it and may return that no server mods are enabled
+    if not GLOBAL.TheNet:GetIsServer() then
+        local ModManager = GLOBAL.ModManager
+        if ModManager.old_mastersim_GetServerModsNames == nil then
+            ModManager.old_mastersim_GetServerModsNames = ModManager.GetServerModsNames
+            ModManager.GetServerModsNames = function(self)
+                -- replaced TheWorld.ismastersim with TheNet:GetIsServer()
+                if GLOBAL.TheNet:GetIsServer() then
+                    return self:GetEnabledServerModNames()
+                else
+                    if self.servermods == nil then
+                        self.servermods = GLOBAL.TheNet:GetServerModNames()
+                    end
+                    return self.servermods
+                end
+            end
+        end
+    end
+end)
