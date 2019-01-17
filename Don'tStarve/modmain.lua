@@ -65,4 +65,4 @@ end
 
 
 AddPrefabPostInit("cookpot", SmarterCookpotInit)
-
+AddPrefabPostInit("portablecookpot", SmarterCookpotInit)
