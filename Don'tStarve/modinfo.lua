@@ -1,5 +1,5 @@
 -- This information tells other players more about the mod
-name = "SmartCrockPot"
+name = "SmartCrockPot fix"
 description = "Predicts your cooking!"
 author = "Nadevill"
 version = "4.000002"

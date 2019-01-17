@@ -1,4 +1,4 @@
-local PREDICT = GLOBAL.Action(3,false,true)
+local PREDICT = GLOBAL.Action({},3,false,true)
 PREDICT.str = "Predict"
 PREDICT.id = "PREDICT"
 PREDICT.fn = function(act)
