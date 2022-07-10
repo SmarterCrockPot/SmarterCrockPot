@@ -59,10 +59,10 @@ local function button_push_fn(inst,action)
         end
     end
 end
-function params.cookpot.widget.buttoninfo2.fn(inst)
+function params.cookpot.widget.buttoninfo2.fn(inst, doer)
     action = GLOBAL.ACTIONS.PREDICT
     if inst.components.container ~= nil then
-        GLOBAL.BufferedAction(inst.components.container.opener, inst, action):Do()
+        GLOBAL.BufferedAction(doer, inst, action):Do()
     elseif inst.replica.container ~= nil and not inst.replica.container:IsBusy() then
         -- if inst:HasTag("SMARTERCROCKPOT-NOTCLIENTONLY") then
             -- print("Requesting Prediction from server xxxx")
@@ -77,10 +77,10 @@ function params.cookpot.widget.buttoninfo2.fn(inst)
         -- end
     end
 end
-function params.cookpot.widget.buttoninfo.fn(inst)
+function params.cookpot.widget.buttoninfo.fn(inst, doer)
     action = GLOBAL.ACTIONS.COOK
     if inst.components.container ~= nil then
-        GLOBAL.BufferedAction(inst.components.container.opener, inst, action):Do()
+        GLOBAL.BufferedAction(doer, inst, action):Do()
     elseif inst.replica.container ~= nil and not inst.replica.container:IsBusy() then
         GLOBAL.SendRPCToServer(GLOBAL.RPC.DoWidgetButtonAction, action.code, inst,action.mod_name)
     end
@@ -91,6 +91,7 @@ function params.cookpot.widget.buttoninfo.validfn(inst)
 end
 params.cookpot.widget.buttoninfo2.validfn = params.cookpot.widget.buttoninfo.validfn 
 
+params.portablecookpot = params.cookpot
 
 containers.smartercrockpot_old_widgetsetup=containers.widgetsetup
 
@@ -98,6 +99,14 @@ function containers.widgetsetup(container, prefab,data)
     target = prefab or container.inst.prefab
     if target == "cookpot" then
         local t = params.cookpot
+        if t ~= nil then
+            for k, v in pairs(t) do
+                container[k] = v
+            end
+            container:SetNumSlots(container.widget.slotpos ~= nil and #container.widget.slotpos or 0)
+        end
+    elseif target == "portablecookpot" then
+        local t = params.portablecookpot
         if t ~= nil then
             for k, v in pairs(t) do
                 container[k] = v
