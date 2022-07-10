@@ -37,8 +37,7 @@ end
 
 
 function GetCandidateRecipes(cooker, ingdata)
-	
-	local recipes = cooking.recipes["cookpot"] or {}
+	local recipes = cooking.recipes[cooker] or {}
 	local candidates = {}
 
 	--find all potentially valid recipes
@@ -85,7 +84,7 @@ function PredictMany(prefab)
 	for k,v in pairs (slots) do
 		table.insert(ings, v.prefab)
 	end
-	local results=PredictRecipes(prefab,ings)
+	local results=PredictRecipes(prefab.prefab,ings)
 	return results
 end			
 

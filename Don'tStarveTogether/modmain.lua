@@ -11,8 +11,6 @@ end
 
 
 local function SmarterCookpotInit(prefab)
-	
-    
 	prefab:AddTag("SMARTERCROCKPOT")
 	if not prefab.components.predicter then
         prefab:AddComponent("predicter")
@@ -27,3 +25,4 @@ end
 
 
 AddPrefabPostInit("cookpot", SmarterCookpotInit)
+AddPrefabPostInit("portablecookpot", SmarterCookpotInit)
